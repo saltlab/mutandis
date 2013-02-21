@@ -1,4 +1,4 @@
-mutandis
+Mutandis
 ========
 
 Mutandis is a JavaScript mutation testing tool that leverages static and dynamic program analysis to guide the
