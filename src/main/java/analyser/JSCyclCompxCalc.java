@@ -8,7 +8,6 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
-import org.apache.log4j.Logger;
 import org.mozilla.javascript.CompilerEnvirons;
 import org.mozilla.javascript.Parser;
 import org.mozilla.javascript.ast.AstNode;
@@ -22,13 +21,16 @@ import org.mozilla.javascript.ast.ObjectProperty;
 import org.mozilla.javascript.ast.ReturnStatement;
 import org.mozilla.javascript.ast.SwitchCase;
 import org.mozilla.javascript.ast.WhileLoop;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.crawljax.core.CrawljaxController;
 import com.crawljax.util.Helper;
 
 
 public class JSCyclCompxCalc implements NodeVisitor{
 	
-	protected static final Logger LOGGER = Logger.getLogger(CrawljaxController.class.getName());
+	protected static final Logger LOGGER = LoggerFactory.getLogger(CrawljaxController.class.getName());
 	private String 	resultFilenameAndPath;
 	private String outputdir;
 	

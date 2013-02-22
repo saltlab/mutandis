@@ -4,8 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 import org.mozilla.javascript.CompilerEnvirons;
 import org.mozilla.javascript.Parser;
 import org.mozilla.javascript.ast.Assignment;

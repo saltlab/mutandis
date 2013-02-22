@@ -9,9 +9,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import analyser.VariableTraceAnalyser;
 
@@ -32,7 +33,7 @@ public class JSVarExecutionTracer extends ExecutionTracer
 	{
 
 
-	private static final Logger LOGGER = Logger.getLogger(JSVarExecutionTracer.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(JSVarExecutionTracer.class.getName());
 
 	public static final String EXECUTIONTRACEDIRECTORY = "varexecutiontrace/";
 

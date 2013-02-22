@@ -2,7 +2,6 @@ package mutator;
 
 
 
-import org.apache.log4j.Logger;
 import org.mozilla.javascript.CompilerEnvirons;
 import org.mozilla.javascript.Parser;
 import org.mozilla.javascript.ast.AstNode;
@@ -11,6 +10,8 @@ import org.mozilla.javascript.ast.LabeledStatement;
 import org.mozilla.javascript.ast.Name;
 import org.mozilla.javascript.ast.NodeVisitor;
 import org.mozilla.javascript.ast.ObjectProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import astModifier.JSASTModifier;
 
@@ -18,7 +19,7 @@ import com.crawljax.core.CrawljaxController;
 
 public class FunctionNodeVisitor implements NodeVisitor{
 	
-	protected static final Logger LOGGER = Logger.getLogger(CrawljaxController.class.getName());
+	protected static final Logger LOGGER = LoggerFactory.getLogger(CrawljaxController.class.getName());
 	
 	/**
 	 * This is used by the JavaScript node creation functions that follow.

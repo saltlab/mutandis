@@ -8,7 +8,7 @@ import java.util.Set;
 
 import net.sourceforge.htmlunit.corejs.javascript.Token;
 
-import org.apache.log4j.Logger;
+
 import org.mozilla.javascript.CompilerEnvirons;
 import org.mozilla.javascript.Parser;
 import org.mozilla.javascript.ast.Assignment;
@@ -26,11 +26,14 @@ import org.mozilla.javascript.ast.PropertyGet;
 import org.mozilla.javascript.ast.StringLiteral;
 import org.mozilla.javascript.ast.VariableDeclaration;
 import org.mozilla.javascript.ast.WhileLoop;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.crawljax.core.CrawljaxController;
 
 public class JSSpecificVisitor implements NodeVisitor{
 	
-	protected static final Logger LOGGER = Logger.getLogger(CrawljaxController.class.getName());
+	protected static final Logger LOGGER = LoggerFactory.getLogger(CrawljaxController.class.getName());
 	
 	/**
 	 * This is used by the JavaScript node creation functions that follow.

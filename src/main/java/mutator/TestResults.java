@@ -4,7 +4,10 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 import com.crawljax.browser.EmbeddedBrowser;
 import com.crawljax.core.CrawlSession;
 import com.crawljax.core.plugin.OnNewStatePlugin;
@@ -12,7 +15,7 @@ import com.crawljax.util.Helper;
 
 
 public class TestResults implements OnNewStatePlugin{
-	private static final Logger LOGGER = Logger.getLogger(TestResults.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(TestResults.class);
 	static SimpleDateFormat sdf = new SimpleDateFormat("ddMMyy-hhmmss");
 	private String dir;
 	private String resultFilenameAndPath;
