@@ -10,7 +10,7 @@ import com.crawljax.core.configuration.CrawljaxConfiguration;
 import com.crawljax.core.configuration.Form;
 import com.crawljax.core.configuration.InputSpecification;
 import com.crawljax.core.configuration.ProxyConfiguration;
-import com.crawljax.plugins.webscarabwrapper.WebScarabWrapper;
+import com.crawljax.plugins.proxy.WebScarabWrapper;
 
 import exectionTracer.AstFunctionCallInstrumenter;
 import exectionTracer.AstVarInstrumenter;

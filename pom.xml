@@ -37,10 +37,12 @@
 
 		
 
+
+		
 		<dependency>
-			<groupId>com.crawljax.plugins</groupId>
-			<artifactId>webscarabwrapper</artifactId>
-			<version>1.0</version>
+  			<groupId>com.crawljax.plugins</groupId>
+  			<artifactId>proxy-plugin</artifactId>
+  			<version>1.3</version>
 		</dependency>
 
 
@@ -70,7 +72,16 @@
 
 	</dependencies>
 
-
+	<repositories>
+	  <repository>
+	    <id>crawljax.mvn.repo</id>
+	    <url>https://github.com/crawljax/crawljax-mvn-repo/raw/master</url>
+	    <snapshots>
+	      <enabled>true</enabled>
+	      <updatePolicy>always</updatePolicy>
+	    </snapshots>
+	  </repository>
+	</repositories>
 
 	<build>
 		<resources>

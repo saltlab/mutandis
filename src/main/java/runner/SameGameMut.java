@@ -16,7 +16,7 @@ import com.crawljax.core.CrawljaxController;
 import com.crawljax.core.configuration.CrawlSpecification;
 import com.crawljax.core.configuration.CrawljaxConfiguration;
 import com.crawljax.core.configuration.ProxyConfiguration;
-import com.crawljax.plugins.webscarabwrapper.WebScarabWrapper;
+import com.crawljax.plugins.proxy.WebScarabWrapper;
 
 public class SameGameMut {
 	
