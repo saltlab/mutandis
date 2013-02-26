@@ -2,13 +2,13 @@ package runner;
 
 import org.openqa.selenium.WebDriver;
 
-import mutator.DomJsCodeLevelVisitor;
-import mutator.FunctionNodeVisitor;
-import mutator.JSSpecificVisitor;
-import mutator.TestResults;
-import analyser.FunctionSelector;
-import analyser.VariableSelector;
-import astModifier.JSModifyProxyPlugin;
+import mutandis.analyser.FunctionSelector;
+import mutandis.analyser.VariableSelector;
+import mutandis.astModifier.JSModifyProxyPlugin;
+import mutandis.mutator.DomJsCodeLevelVisitor;
+import mutandis.mutator.FunctionNodeVisitor;
+import mutandis.mutator.JSSpecificVisitor;
+import mutandis.mutator.TestResults;
 
 import com.crawljax.browser.EmbeddedBrowser.BrowserType;
 import com.crawljax.core.CrawlSession;
@@ -17,6 +17,7 @@ import com.crawljax.core.configuration.CrawlSpecification;
 import com.crawljax.core.configuration.CrawljaxConfiguration;
 import com.crawljax.core.configuration.ProxyConfiguration;
 import com.crawljax.plugins.proxy.WebScarabWrapper;
+
 
 public class SameGameMut {
 	

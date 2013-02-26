@@ -1,8 +1,12 @@
 package runner;
 
 
-import analyser.JSCyclCompxCalc;
-import astModifier.JSModifyProxyPlugin;
+import mutandis.analyser.JSCyclCompxCalc;
+import mutandis.astModifier.JSModifyProxyPlugin;
+import mutandis.exectionTracer.AstFunctionCallInstrumenter;
+import mutandis.exectionTracer.AstVarInstrumenter;
+import mutandis.exectionTracer.JSFuncExecutionTracer;
+import mutandis.exectionTracer.JSVarExecutionTracer;
 
 import com.crawljax.core.CrawljaxController;
 import com.crawljax.core.configuration.CrawlSpecification;
@@ -12,10 +16,7 @@ import com.crawljax.core.configuration.InputSpecification;
 import com.crawljax.core.configuration.ProxyConfiguration;
 import com.crawljax.plugins.proxy.WebScarabWrapper;
 
-import exectionTracer.AstFunctionCallInstrumenter;
-import exectionTracer.AstVarInstrumenter;
-import exectionTracer.JSFuncExecutionTracer;
-import exectionTracer.JSVarExecutionTracer;
+
 
 /**
  * sample runner for information extraction phase
@@ -31,7 +32,7 @@ public class SameGameExecTraces {
 	 */
 	public static void main(String[] args) {
 		/* tracing function calls or variables? */
-		boolean traceFunc=false;
+		boolean traceFunc=true;
 		String outputdir = "sameGame1-output2";
 		CrawljaxConfiguration config = new CrawljaxConfiguration();
 		config.setOutputFolder(outputdir);
