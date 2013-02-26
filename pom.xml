@@ -29,8 +29,8 @@
 
 		<dependency>
 			<groupId>com.crawljax</groupId>
-			<artifactId>crawljax-core-modified</artifactId>
-			<version>2.3-SNAPSHOT</version>
+			<artifactId>crawljax</artifactId>
+			<version>2.2</version>
 			<type>jar</type>
 		</dependency>
 		
