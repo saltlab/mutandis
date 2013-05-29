@@ -199,12 +199,27 @@ public class VariableVisitor implements NodeVisitor{
 					if(nodeFinder.getVariableExists()){			
 						setVariableMap(node.getParent(), "Assignment");			
 					}
+					else{
+						((Assignment)node).getRight().visit(nodeFinder);
+						if(nodeFinder.getVariableExists()){	
+						
+							setVariableMap(node, "Assignment");	
+						}
+					}
+					
 					nodeFinder.setVariableExists(false);
 				}
 				else{
 					((Assignment)node).getLeft().visit(nodeFinder);
 					if(nodeFinder.getVariableExists()){			
 						setVariableMap(node, "Assignment");			
+					}
+					else{
+						((Assignment)node).getRight().visit(nodeFinder);
+						if(nodeFinder.getVariableExists()){	
+						
+							setVariableMap(node, "Assignment");	
+						}
 					}
 					nodeFinder.setVariableExists(false);
 				}
