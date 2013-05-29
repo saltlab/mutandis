@@ -52,6 +52,7 @@ public class VariableExtractorFromInvars {
 	}
 	private HashMap<String,ArrayList<String>> startAnalysingInvarFile(){
 		HashMap<String,ArrayList<String>> varfuncMap=new HashMap<String,ArrayList<String>>();
+		
 		try{
 			
 			BufferedReader input =
@@ -109,7 +110,8 @@ public class VariableExtractorFromInvars {
 			  }
 		}
 		catch (IOException e) {
-			e.printStackTrace();
+			varfuncMap=new HashMap<String,ArrayList<String>>();
+			return varfuncMap;
 		}
 		
 		return varfuncMap;
