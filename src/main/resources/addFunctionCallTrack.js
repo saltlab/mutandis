@@ -14,8 +14,15 @@ function sendReally() {
 	window.buffer = new Array();
 }
 
-function addFunctionCallTrack(funcCallerName, funcCalleeName) {
+function addFunctionCallTrack(funcCalleeName) {
 	
-	return new Array(funcCallerName, funcCalleeName);
+	if(arguments.callee.caller==null){
+		return new Array("NoFunctionNode", funcCalleeName);
+	}
+	else if(String(arguments.callee.caller).indexOf("function (e)")==0
+			|| String(arguments.callee.caller).indexOf("function (event)")==0){
+		return new Array("eventHandler", funcCalleeName);
+	}
+	return new Array(arguments.callee.caller.funcName, funcCalleeName);
 				
 };
