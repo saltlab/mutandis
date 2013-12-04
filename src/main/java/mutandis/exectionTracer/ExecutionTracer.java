@@ -32,6 +32,7 @@ public abstract class ExecutionTracer
 
 	protected static String outputFolder;
 	protected static String instrumentationFilename;
+	protected static String jsFilesFolder;
 
 	protected static JSONArray points = new JSONArray();
 
@@ -136,6 +137,13 @@ public abstract class ExecutionTracer
 	@Override
 	public String getOutputFolder() {
 		return Helper.addFolderSlashIfNeeded(outputFolder);
+	}
+	public String getJsFilesFolder(){
+		return Helper.addFolderSlashIfNeeded(jsFilesFolder);
+	}
+	
+	public void setJsFilesFolder(String jsfileFolder){
+		jsFilesFolder=jsfileFolder;
 	}
 
 	@Override

@@ -26,12 +26,12 @@ public class FunctionRankCalculator {
 	private HashMap<String, Double> functionProbabilities;
 	public static final double alpha=0; 
 
-	public FunctionRankCalculator(String outputFolder){
+	public FunctionRankCalculator(String outputFolder, String jsFilesFolder){
 		
 		functionRankMap=new HashMap<String, Double>();
 		functionProbabilities=new HashMap<String, Double>();
 		functionCallGraph=new WeightedGraph();
-		FunctionCallTraceAnalyser functionAnalyser=new FunctionCallTraceAnalyser(outputFolder);
+		FunctionCallTraceAnalyser functionAnalyser=new FunctionCallTraceAnalyser(outputFolder, jsFilesFolder);
 		functionAnalyser.startAnalysingTraceFiles();
 		TreeMap<String, ArrayList<ArrayList<Object>>> funcMap=functionAnalyser.getFunctionCallMap();
 		Set<String> keySet=funcMap.keySet();
@@ -40,7 +40,7 @@ public class FunctionRankCalculator {
 		while(it.hasNext()){
 			
 			String funcName=it.next();
-			String functionScope=funcName.split("::")[0];
+	//		String functionScope=funcName.split("::")[0];
 	//		funcName=funcName.split("::")[1];
 			Vertex callerVertex=new Vertex(funcName);
 			ArrayList<ArrayList<Object>> calleeList=funcMap.get(funcName);
@@ -67,17 +67,24 @@ public class FunctionRankCalculator {
 		}
 		
 		ArrayList<Vertex> vertices=(ArrayList<Vertex>) functionCallGraph.getVertices();
+		Vertex fakeVertex=new Vertex("fakeVertex");
 		for(int i=0;i<vertices.size();i++){
 			if(Math.abs(vertices.get(i).getSumWeightOutEdges()-1)>0){
+				if(!functionCallGraph.containsVertex(fakeVertex)){
+					functionCallGraph.addVertex(fakeVertex);
+				}
 				double res=vertices.get(i).getSumWeightOutEdges()-1;
-				double resToadd=(double)res/vertices.get(i).outEdges.size();
+				Edge fakeEdge=new Edge(fakeVertex, vertices.get(i), res);
+				functionCallGraph.addEdge(fakeEdge, vertices.get(i), fakeVertex);
+				
+			/*	double resToadd=(double)res/vertices.get(i).outEdges.size();
 				Iterator<Edge> iter=vertices.get(i).outEdges.iterator();
 				while(iter.hasNext()){
 					Edge edge=iter.next();
 					double currWeght=edge.getWeight();
 					edge.setWeight(currWeght-resToadd);
 				}
-				
+			*/	
 			}
 			
 		}
@@ -108,13 +115,13 @@ public class FunctionRankCalculator {
 		ArrayList<Vertex> vertices=(ArrayList<Vertex>) functionCallGraph.getVertices();
 	
 	//	List<Double> scList=new ArrayList<Double>();
-		double total=0.0;
+	//	double total=0.0;
 		for(Vertex vertex:vertices){
-			if(!"".equals(vertex.name)){
+			if(!"".equals(vertex.name) && !"fakeVertex".equals(vertex.name)){
 				double score=functionRank.getVertexScore(vertex);
-				double roundedScore=((double)(Math.round(score*10000))/10000);
+	/*			double roundedScore=((double)(Math.round(score*10000))/10000);
 				total+=roundedScore;
-				functionRankMap.put(vertex.name, score);
+	*/			functionRankMap.put(vertex.name, score);
 
 			}
 		}
@@ -128,10 +135,12 @@ public class FunctionRankCalculator {
 			functionProbabilities.put(funcName, (double)score/totalScore);
 			
 		}
+	
 		
 		
-		HashMap<String,Double> prob=getfunctionProbabilities();
-		Set<String> keySets=prob.keySet();
+		
+	//	HashMap<String,Double> prob=getfunctionProbabilities();
+	//	Set<String> keySets=prob.keySet();
 
 		
 	}

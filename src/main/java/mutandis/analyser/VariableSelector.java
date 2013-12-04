@@ -22,9 +22,9 @@ public class VariableSelector {
 //	private double threshold=SystemProps.threshold;
 	
 	
-	public VariableSelector(String outputdir){
+	public VariableSelector(String outputdir, String jsFilesFolder){
 		
-		variableTraceAnalyser=new VariableTraceAnalyser(outputdir);
+		variableTraceAnalyser=new VariableTraceAnalyser(outputdir, jsFilesFolder);
 		variableTraceAnalyser.startAnalysingTraceFiles();
 		variableMap=variableTraceAnalyser.getVariableMap();
 		variableExtractorFromInvars=new VariableExtractorFromInvars(outputdir);

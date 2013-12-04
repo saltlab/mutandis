@@ -195,7 +195,7 @@ public class JSFuncExecutionTracer extends ExecutionTracer
 			
 //				List<String> tracefiles = allTraceFiles();
 //				String resultFileAndPath=getOutputFolder() + EXECUTIONTRACEDIRECTORY + "..\\" + "functionCallTraceResult.txt";
-				FunctionCallTraceAnalyser funcCallTraceAnalyser=new FunctionCallTraceAnalyser(getOutputFolder());
+				FunctionCallTraceAnalyser funcCallTraceAnalyser=new FunctionCallTraceAnalyser(getOutputFolder(),getJsFilesFolder());
 				
 				funcCallTraceAnalyser.startAnalysingTraceFiles();
 			

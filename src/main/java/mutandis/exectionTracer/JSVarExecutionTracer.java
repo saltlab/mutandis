@@ -193,7 +193,7 @@ public class JSVarExecutionTracer extends ExecutionTracer
 		
 //			List<String> tracefiles = allTraceFiles();
 //			String resultFileAndPath=getOutputFolder() + EXECUTIONTRACEDIRECTORY + "..\\" + "variableTraceResult.txt";
-			VariableTraceAnalyser varTraceAnalyser=new VariableTraceAnalyser(getOutputFolder());
+			VariableTraceAnalyser varTraceAnalyser=new VariableTraceAnalyser(getOutputFolder(), getJsFilesFolder());
 			
 			varTraceAnalyser.startAnalysingTraceFiles();
 		

@@ -157,6 +157,11 @@ public class FunctionNodeVisitor implements NodeVisitor{
 				
 			}
 		}
+		else if(functionNodeName.equals("NoFunctionNode")){
+			AstNode nodeToVisit=node.getAstRoot();
+			if(isVariableMut)
+				nodeToVisit.visit(variableVisitor);
+		}
 		
 		return true;
 	}
