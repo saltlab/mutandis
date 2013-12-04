@@ -47,7 +47,7 @@ public abstract class JSASTModifier implements NodeVisitor  {
 		 */
 		private static List<String> functionsToLogVars=new ArrayList<String>();
 		private static List<String> functionCallsNotToLog=new ArrayList<String>();
-		private static List<String> functionNodes=new ArrayList<String>();
+		public static List<String> functionNodes=new ArrayList<String>();
 		/**
 		 * This is used by the JavaScript node creation functions that follow.
 		 */
@@ -419,7 +419,22 @@ public abstract class JSASTModifier implements NodeVisitor  {
 				}
 				else{
 					
-					if (node instanceof FunctionCall
+					if(node instanceof FunctionNode){
+						
+						FunctionNode fNode=(FunctionNode) node;
+						String funcName=getFunctionName(fNode);
+						
+						String code="var me = arguments.callee;";
+						code+="me.funcName = " + funcName +";";
+						AstNode funcNameNode=parse(code);
+						fNode.getBody().addChildToFront(funcNameNode);
+						AstNode newNode=createFunctionTrackingNode(fNode);
+						appendNodeAfterFunctionCall(node, newNode);
+						
+					}
+					
+					
+		/*			if (node instanceof FunctionCall
 							&& !(((FunctionCall) node).getTarget() instanceof PropertyGet)
 							&& !(node instanceof NewExpression)
 							&& shouldVisitFunctionCall((FunctionCall)node)
@@ -463,7 +478,7 @@ public abstract class JSASTModifier implements NodeVisitor  {
 				    	}
 			    	
 			    	}
-				
+			*/	
 				    				
 				}
 			}
@@ -485,7 +500,7 @@ public abstract class JSASTModifier implements NodeVisitor  {
 		 * create node for tracking function calls
 		 */
 		
-		protected abstract AstNode createFunctionTrackingNode(FunctionNode callerFunction, FunctionCall calleeFunction);
+		protected abstract AstNode createFunctionTrackingNode(FunctionNode calleeFunction);
 		/**
 		 * This method is called when the complete AST has been traversed.
 		 * 

@@ -53,6 +53,7 @@ public class VariableVisitor implements NodeVisitor{
 	private static Random rnd=new Random(100);
 	private String functionNodeName;
 	private String variableName;
+	private boolean mutateMainFunction=false;
 	/* forexample for variable x we have: typeOfCode -> <sourceCode> i.e: 
 	 * functionCall -> <[test1(x,y)],[test2(x,u)],...> */
 	private HashMap<String,ArrayList<AstNode>> variableMap;
@@ -60,7 +61,8 @@ public class VariableVisitor implements NodeVisitor{
 	private NodeFinder nodeFinder;
 	
 	public VariableVisitor(String functionName,String variableName){
-		
+		if(functionName.equals("NoFunctionNode"))
+			mutateMainFunction=true;
 		functionNodeName=functionName;
 		this.variableName=variableName;
 		nodeFinder=new NodeFinder(variableName);
@@ -140,113 +142,188 @@ public class VariableVisitor implements NodeVisitor{
 	}
 	
 	@Override
-	public boolean visit(AstNode node) {	
-		if(node instanceof FunctionNode){
-			List<AstNode> args=((FunctionNode) node).getParams();
-			for(int i=0;i<args.size();i++){
-				args.get(i).visit(nodeFinder);
-				if(nodeFinder.getVariableExists()){
-					break;
-				}
-			}
-	//		node.visit(nodeFinder);
-			if(nodeFinder.getVariableExists()){
-				
-				setVariableMap(node,"FunctionNode");					
-			}
-			nodeFinder.setVariableExists(false);
-		}
-		else if(node instanceof FunctionCall){
-			node.visit(nodeFinder);
-			if(nodeFinder.getVariableExists()){
-				
-				setVariableMap(node,"FunctionCall");					
-			}
-			nodeFinder.setVariableExists(false);
-		}
-				
-		
-		else if(node instanceof ReturnStatement){
-			node.visit(nodeFinder);
-			if(nodeFinder.getVariableExists()){
-				
-				setVariableMap(node,"ReturnStatement");					
-			}
-			nodeFinder.setVariableExists(false);
-		}
-		
-
-		else if(node instanceof VariableDeclaration){
-			if (node.getParent() instanceof ExpressionStatement){
-				node.visit(nodeFinder);
-				if(nodeFinder.getVariableExists()){			
-					setVariableMap(node.getParent(), "VariableDeclaration");			
-				}
-				nodeFinder.setVariableExists(false);
-			}
-			else{
-				node.visit(nodeFinder);
-				if(nodeFinder.getVariableExists()){			
-					setVariableMap(node, "VariableDeclaration");			
-				}
-				nodeFinder.setVariableExists(false);
-			}
-		}
-		
-		else if(node instanceof Assignment) {
-				if (node.getParent() instanceof ExpressionStatement){
-					((Assignment)node).getLeft().visit(nodeFinder);
-					if(nodeFinder.getVariableExists()){			
-						setVariableMap(node.getParent(), "Assignment");			
-					}
-					else{
-						((Assignment)node).getRight().visit(nodeFinder);
-						if(nodeFinder.getVariableExists()){	
-						
-							setVariableMap(node, "Assignment");	
+	public boolean visit(AstNode node) {
+		if(mutateMainFunction){
+			if(node.getParent().equals(node.getAstRoot())){
+				 if(node instanceof VariableDeclaration){
+						if (node.getParent() instanceof ExpressionStatement){
+							node.visit(nodeFinder);
+							if(nodeFinder.getVariableExists()){			
+								setVariableMap(node.getParent(), "VariableDeclaration");			
+							}
+							nodeFinder.setVariableExists(false);
+						}
+						else{
+							node.visit(nodeFinder);
+							if(nodeFinder.getVariableExists()){			
+								setVariableMap(node, "VariableDeclaration");			
+							}
+							nodeFinder.setVariableExists(false);
 						}
 					}
 					
+					else if(node instanceof Assignment) {
+							if (node.getParent() instanceof ExpressionStatement){
+								((Assignment)node).getLeft().visit(nodeFinder);
+								if(nodeFinder.getVariableExists()){			
+									setVariableMap(node.getParent(), "Assignment");			
+								}
+								else{
+									((Assignment)node).getRight().visit(nodeFinder);
+									if(nodeFinder.getVariableExists()){	
+									
+										setVariableMap(node, "Assignment");	
+									}
+								}
+								
+								nodeFinder.setVariableExists(false);
+							}
+							else{
+								((Assignment)node).getLeft().visit(nodeFinder);
+								if(nodeFinder.getVariableExists()){			
+									setVariableMap(node, "Assignment");			
+								}
+								else{
+									((Assignment)node).getRight().visit(nodeFinder);
+									if(nodeFinder.getVariableExists()){	
+									
+										setVariableMap(node, "Assignment");	
+									}
+								}
+								nodeFinder.setVariableExists(false);
+							}
+					}
+					
+					else if(node instanceof UnaryExpression){
+						if(((UnaryExpression)node).getOperator()==Token.INC
+								|| ((UnaryExpression)node).getOperator()==Token.DEC)
+							if (node.getParent() instanceof ExpressionStatement){
+								((UnaryExpression)node).visit(nodeFinder);
+								if(nodeFinder.getVariableExists()){			
+									setVariableMap(node.getParent(), "Assignment");			
+							}
+								nodeFinder.setVariableExists(false);
+						}
+						else{
+							((UnaryExpression)node).visit(nodeFinder);
+							if(nodeFinder.getVariableExists()){			
+								setVariableMap(node, "Assignment");			
+							}
+							nodeFinder.setVariableExists(false);
+						}
+								
+						
+					}
+			}
+		}
+		
+		else{
+			if(node instanceof FunctionNode){
+				List<AstNode> args=((FunctionNode) node).getParams();
+				for(int i=0;i<args.size();i++){
+					args.get(i).visit(nodeFinder);
+					if(nodeFinder.getVariableExists()){
+						break;
+					}
+				}
+		//		node.visit(nodeFinder);
+				if(nodeFinder.getVariableExists()){
+					
+					setVariableMap(node,"FunctionNode");					
+				}
+				nodeFinder.setVariableExists(false);
+			}
+			else if(node instanceof FunctionCall){
+				node.visit(nodeFinder);
+				if(nodeFinder.getVariableExists()){
+					
+					setVariableMap(node,"FunctionCall");					
+				}
+				nodeFinder.setVariableExists(false);
+			}
+					
+			
+			else if(node instanceof ReturnStatement){
+				node.visit(nodeFinder);
+				if(nodeFinder.getVariableExists()){
+					
+					setVariableMap(node,"ReturnStatement");					
+				}
+				nodeFinder.setVariableExists(false);
+			}
+			
+	
+			else if(node instanceof VariableDeclaration){
+				if (node.getParent() instanceof ExpressionStatement){
+					node.visit(nodeFinder);
+					if(nodeFinder.getVariableExists()){			
+						setVariableMap(node.getParent(), "VariableDeclaration");			
+					}
 					nodeFinder.setVariableExists(false);
 				}
 				else{
-					((Assignment)node).getLeft().visit(nodeFinder);
+					node.visit(nodeFinder);
+					if(nodeFinder.getVariableExists()){			
+						setVariableMap(node, "VariableDeclaration");			
+					}
+					nodeFinder.setVariableExists(false);
+				}
+			}
+			
+			else if(node instanceof Assignment) {
+					if (node.getParent() instanceof ExpressionStatement){
+						((Assignment)node).getLeft().visit(nodeFinder);
+						if(nodeFinder.getVariableExists()){			
+							setVariableMap(node.getParent(), "Assignment");			
+						}
+						else{
+							((Assignment)node).getRight().visit(nodeFinder);
+							if(nodeFinder.getVariableExists()){	
+							
+								setVariableMap(node, "Assignment");	
+							}
+						}
+						
+						nodeFinder.setVariableExists(false);
+					}
+					else{
+						((Assignment)node).getLeft().visit(nodeFinder);
+						if(nodeFinder.getVariableExists()){			
+							setVariableMap(node, "Assignment");			
+						}
+						else{
+							((Assignment)node).getRight().visit(nodeFinder);
+							if(nodeFinder.getVariableExists()){	
+							
+								setVariableMap(node, "Assignment");	
+							}
+						}
+						nodeFinder.setVariableExists(false);
+					}
+			}
+			
+			else if(node instanceof UnaryExpression){
+				if(((UnaryExpression)node).getOperator()==Token.INC
+						|| ((UnaryExpression)node).getOperator()==Token.DEC)
+					if (node.getParent() instanceof ExpressionStatement){
+						((UnaryExpression)node).visit(nodeFinder);
+						if(nodeFinder.getVariableExists()){			
+							setVariableMap(node.getParent(), "Assignment");			
+					}
+						nodeFinder.setVariableExists(false);
+				}
+				else{
+					((UnaryExpression)node).visit(nodeFinder);
 					if(nodeFinder.getVariableExists()){			
 						setVariableMap(node, "Assignment");			
 					}
-					else{
-						((Assignment)node).getRight().visit(nodeFinder);
-						if(nodeFinder.getVariableExists()){	
+					nodeFinder.setVariableExists(false);
+				}
 						
-							setVariableMap(node, "Assignment");	
-						}
-					}
-					nodeFinder.setVariableExists(false);
-				}
-		}
-		
-		else if(node instanceof UnaryExpression){
-			if(((UnaryExpression)node).getOperator()==Token.INC
-					|| ((UnaryExpression)node).getOperator()==Token.DEC)
-				if (node.getParent() instanceof ExpressionStatement){
-					((UnaryExpression)node).visit(nodeFinder);
-					if(nodeFinder.getVariableExists()){			
-						setVariableMap(node.getParent(), "Assignment");			
-				}
-					nodeFinder.setVariableExists(false);
+				
 			}
-			else{
-				((UnaryExpression)node).visit(nodeFinder);
-				if(nodeFinder.getVariableExists()){			
-					setVariableMap(node, "Assignment");			
-				}
-				nodeFinder.setVariableExists(false);
-			}
-					
-			
-		}
 		
-			
+		}	
 		return true;
 	}
 	

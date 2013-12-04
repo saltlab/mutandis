@@ -21,9 +21,9 @@ public class FunctionSelector {
 	private HashMap<String,Double> sortedProbMap;
 
 
-	public FunctionSelector(String outputdir){
+	public FunctionSelector(String outputdir, String jsFilesFolders){
 	
-		functionRankCalculator=new FunctionRankCalculator(outputdir);
+		functionRankCalculator=new FunctionRankCalculator(outputdir, jsFilesFolders);
 		cyclCompxCalc=new JSCyclCompxCalc(outputdir);
 		sortedProbMap=new LinkedHashMap<String,Double>();
 		sortedProbMap=convertToSortedProbMap

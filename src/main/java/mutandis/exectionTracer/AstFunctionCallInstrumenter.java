@@ -60,25 +60,21 @@ public class AstFunctionCallInstrumenter extends JSASTModifier {
 	
 	
 	@Override
-	protected AstNode createFunctionTrackingNode(FunctionNode callerFunction, FunctionCall calleeFunction) {
+	protected AstNode createFunctionTrackingNode(FunctionNode calleeFunction) {
 		
-		String callerFunctionName=getFunctionName(callerFunction);
-		String calleeFunctionName=calleeFunction.getTarget().toSource();
-		if(calleeFunctionName.contains(".")){
-			String[]callee=calleeFunctionName.split("\\.");
-			calleeFunctionName=callee[callee.length-1];
-		}
+		String calleeFunctionName=getFunctionName(calleeFunction);
+		
+		
 		calleeFunctionName = Helper.removeNewLines(calleeFunctionName);
 		/* escape quotes */
 		calleeFunctionName = calleeFunctionName.replaceAll("\\\"", "\\\\\"");
 		calleeFunctionName = calleeFunctionName.replaceAll("\\\'", "\\\\\'");
 		int lineNo=calleeFunction.getLineno();
 		String code=
-			"send(new Array('" + getScopeName() + "::" + callerFunctionName + "', '" + lineNo +  
+			"send(new Array('" + getScopeName() + "::" + calleeFunctionName + "', '" + lineNo +  
             "', new Array(";
 		
-		code += "addFunctionCallTrack('" + callerFunctionName + "'" + ", " + "'" + 
-		calleeFunctionName + "'"+"))));";
+		code += "addFunctionCallTrack('" + calleeFunctionName + "'" + "))));";
 
 		return parse(code);
 	

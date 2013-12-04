@@ -397,7 +397,7 @@ public class AstVarInstrumenter extends JSASTModifier {
 	 * for now do nothing here
 	 */
 	@Override
-	public AstNode createFunctionTrackingNode(FunctionNode callerFunction, FunctionCall calleeFunction) {
+	public AstNode createFunctionTrackingNode(FunctionNode calleeFunction) {
 	
 		return null;
 	}
