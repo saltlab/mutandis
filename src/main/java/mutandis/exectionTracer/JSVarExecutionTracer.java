@@ -120,10 +120,11 @@ public class JSVarExecutionTracer extends ExecutionTracer
 	
 	
 	
-/*	@Override
+	@Override
 	public void onNewState(CrawlSession session) {
         
 	
+		
 		String filename = getOutputFolder() + EXECUTIONTRACEDIRECTORY + "jsexecutiontrace-";
 		
 		filename += session.getCurrentState().getName();
@@ -162,7 +163,7 @@ public class JSVarExecutionTracer extends ExecutionTracer
 	}
 	
 	
-	*/
+	
 	
 	
 	@Override

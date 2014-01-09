@@ -89,8 +89,15 @@ public class FunctionCallTraceAnalyser {
 						}
 				
 						if (!bool){
-							/*the if check is for ommiting self loops as page rank does not support self loops*/
-							if(!callee.equals(callerName)){
+							/*the if check is for handling self loops as page rank does not support self loops*/
+					
+							if(callee.equals(callerName)){
+								ArrayList<Object> newCallee=new ArrayList<Object>();
+								newCallee.add(0,callee+"_recursive_copy");
+								newCallee.add(1,1.0);
+								calleeList.add(newCallee);
+							}
+							else{
 								ArrayList<Object> newCallee=new ArrayList<Object>();
 								newCallee.add(0,callee);
 								newCallee.add(1,1.0);
@@ -102,8 +109,17 @@ public class FunctionCallTraceAnalyser {
 					}
 					
 					else{
-						/*the if check is for ommiting self loops as page rank does not support self loops*/
-						if(!callee.equals(callerName)){
+						/*the if check is for handling self loops as page rank does not support self loops*/
+						if(callee.equals(callerName)){
+							ArrayList<Object> newCallee=new ArrayList<Object>();
+							newCallee.add(0,callee+"_recursive_copy");
+							newCallee.add(1,1.0);
+							ArrayList<ArrayList<Object>> newCalleeList=new ArrayList<ArrayList<Object>>();
+							newCalleeList.add(newCallee);
+							functionCallMap.put(callerName, newCalleeList);
+						}
+						
+						else{
 							ArrayList<Object> newCallee=new ArrayList<Object>();
 							newCallee.add(0,callee);
 							newCallee.add(1,1.0);
@@ -125,8 +141,15 @@ public class FunctionCallTraceAnalyser {
 					if (functionCallMap.containsKey(caller)){
 						ArrayList<ArrayList<Object>> calleeList=functionCallMap.get(caller);        
 								
-							/*the if check is for ommiting self loops as page rank does not support self loops*/
-						if(!notExecFunc.equals(caller)){
+							/*the if check is for handling self loops as page rank does not support self loops*/
+						
+						if(notExecFunc.equals(caller)){
+							ArrayList<Object> newCallee=new ArrayList<Object>();
+							newCallee.add(0,notExecFunc+"_recursive_copy");
+							newCallee.add(1,1.0);
+							calleeList.add(newCallee);
+						}
+						else{
 							ArrayList<Object> newCallee=new ArrayList<Object>();
 							newCallee.add(0,notExecFunc);
 							newCallee.add(1,1.0);
@@ -138,8 +161,17 @@ public class FunctionCallTraceAnalyser {
 					}
 					
 					else{
-						/*the if check is for ommiting self loops as page rank does not support self loops*/
-						if(!notExecFunc.equals(caller)){
+						/*the if check is for handling self loops as page rank does not support self loops*/
+						
+						if(notExecFunc.equals(caller)){
+							ArrayList<Object> newCallee=new ArrayList<Object>();
+							newCallee.add(0,notExecFunc+"_recursive_copy");
+							newCallee.add(1,1.0);
+							ArrayList<ArrayList<Object>> newCalleeList=new ArrayList<ArrayList<Object>>();
+							newCalleeList.add(newCallee);
+							functionCallMap.put(caller, newCalleeList);
+						}
+						else{
 							ArrayList<Object> newCallee=new ArrayList<Object>();
 							newCallee.add(0,notExecFunc);
 							newCallee.add(1,1.0);

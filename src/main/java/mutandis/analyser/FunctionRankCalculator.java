@@ -44,47 +44,74 @@ public class FunctionRankCalculator {
 	//		funcName=funcName.split("::")[1];
 			Vertex callerVertex=new Vertex(funcName);
 			ArrayList<ArrayList<Object>> calleeList=funcMap.get(funcName);
-			
+			boolean containRecursiveFunc=false;
 			for(ArrayList<Object> callee:calleeList){
 				
-		//		String calleeName=functionScope+"::"+(String) callee.get(0);
+	
 				String calleeName=(String) callee.get(0);
-				double weight=(Double) callee.get(1);
-				Vertex calleeVertex=new Vertex(calleeName);
-				functionCallGraph.addVertex(calleeVertex);
-				if(funcName.equals(calleeName)){ 
-					continue;
-				}
-				
-				Edge callerCallee=new Edge(callerVertex, calleeVertex, weight);
-			
+				if(calleeName.contains("_recursive_copy")){
+					containRecursiveFunc=true;
+					double weight=(Double) callee.get(1);
+					Vertex copy=new Vertex(calleeName);
+					functionCallGraph.addVertex(copy);
+					Edge callerCopy=new Edge(callerVertex, copy, weight);		
+					functionCallGraph.addEdge(callerCopy, callerVertex, copy);
+					calleeList.remove(callee);
+					for(int i=0;i<calleeList.size();i++){
+						calleeName=(String) calleeList.get(i).get(0);
+						weight=(Double) calleeList.get(i).get(1);
+						Vertex calleeVertex=new Vertex(calleeName);
+						functionCallGraph.addVertex(calleeVertex);
+						Edge copyCallee=new Edge(copy, calleeVertex, weight);		
+						functionCallGraph.addEdge(copyCallee, copy, calleeVertex);
+					}
 					
-				functionCallGraph.addEdge(callerCallee, callerVertex, calleeVertex);
-				
+					break;
+				}
 			}
-			
+			if(!containRecursiveFunc){
+				for(ArrayList<Object> callee:calleeList){
+					
+			//		String calleeName=functionScope+"::"+(String) callee.get(0);
+					String calleeName=(String) callee.get(0);
+					double weight=(Double) callee.get(1);
+					Vertex calleeVertex=new Vertex(calleeName);
+					functionCallGraph.addVertex(calleeVertex);
+					if(funcName.equals(calleeName)){ 
+						continue;
+					}
+					
+					Edge callerCallee=new Edge(callerVertex, calleeVertex, weight);
+				
+						
+					functionCallGraph.addEdge(callerCallee, callerVertex, calleeVertex);
+					
+				}
+			}
 			
 		}
 		
 		ArrayList<Vertex> vertices=(ArrayList<Vertex>) functionCallGraph.getVertices();
 		Vertex fakeVertex=new Vertex("fakeVertex");
-		for(int i=0;i<vertices.size();i++){
-			if(Math.abs(vertices.get(i).getSumWeightOutEdges()-1)>0){
-				if(!functionCallGraph.containsVertex(fakeVertex)){
-					functionCallGraph.addVertex(fakeVertex);
+		for(int i=0;i<vertices.size() && !vertices.get(i).name.equals("fakeVertex");i++){
+			if(vertices.get(i).outEdges.size()!=0){
+				if(Math.abs(vertices.get(i).getSumWeightOutEdges()-1)>0){
+					if(!functionCallGraph.containsVertex(fakeVertex)){
+						functionCallGraph.addVertex(fakeVertex);
+					}
+					double res=1-vertices.get(i).getSumWeightOutEdges();
+					Edge fakeEdge=new Edge(vertices.get(i), fakeVertex, res);
+					functionCallGraph.addEdge(fakeEdge, vertices.get(i), fakeVertex);
+					
+				/*	double resToadd=(double)res/vertices.get(i).outEdges.size();
+					Iterator<Edge> iter=vertices.get(i).outEdges.iterator();
+					while(iter.hasNext()){
+						Edge edge=iter.next();
+						double currWeght=edge.getWeight();
+						edge.setWeight(currWeght-resToadd);
+					}
+				*/	
 				}
-				double res=vertices.get(i).getSumWeightOutEdges()-1;
-				Edge fakeEdge=new Edge(fakeVertex, vertices.get(i), res);
-				functionCallGraph.addEdge(fakeEdge, vertices.get(i), fakeVertex);
-				
-			/*	double resToadd=(double)res/vertices.get(i).outEdges.size();
-				Iterator<Edge> iter=vertices.get(i).outEdges.iterator();
-				while(iter.hasNext()){
-					Edge edge=iter.next();
-					double currWeght=edge.getWeight();
-					edge.setWeight(currWeght-resToadd);
-				}
-			*/	
 			}
 			
 		}

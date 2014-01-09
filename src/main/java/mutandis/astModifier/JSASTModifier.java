@@ -425,11 +425,13 @@ public abstract class JSASTModifier implements NodeVisitor  {
 						String funcName=getFunctionName(fNode);
 						
 						String code="var me = arguments.callee;";
-						code+="me.funcName = " + funcName +";";
+						code+="me.funcName = " + "'" + funcName + "'" +";";
+						code+="var callerName = arguments.callee.caller.funcName;";
 						AstNode funcNameNode=parse(code);
 						fNode.getBody().addChildToFront(funcNameNode);
-						AstNode newNode=createFunctionTrackingNode(fNode);
-						appendNodeAfterFunctionCall(node, newNode);
+						AstNode newNode=createFunctionTrackingNode(fNode, "callerName");
+		//				appendNodeAfterFunctionCall(node, newNode);
+						fNode.getBody().addChildAfter(newNode,funcNameNode);
 						
 					}
 					
@@ -500,7 +502,7 @@ public abstract class JSASTModifier implements NodeVisitor  {
 		 * create node for tracking function calls
 		 */
 		
-		protected abstract AstNode createFunctionTrackingNode(FunctionNode calleeFunction);
+		protected abstract AstNode createFunctionTrackingNode(FunctionNode calleeFunction, String callerName);
 		/**
 		 * This method is called when the complete AST has been traversed.
 		 * 

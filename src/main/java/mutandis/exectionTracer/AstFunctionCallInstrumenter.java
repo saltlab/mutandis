@@ -60,7 +60,7 @@ public class AstFunctionCallInstrumenter extends JSASTModifier {
 	
 	
 	@Override
-	protected AstNode createFunctionTrackingNode(FunctionNode calleeFunction) {
+	protected AstNode createFunctionTrackingNode(FunctionNode calleeFunction, String callerName) {
 		
 		String calleeFunctionName=getFunctionName(calleeFunction);
 		
@@ -70,11 +70,23 @@ public class AstFunctionCallInstrumenter extends JSASTModifier {
 		calleeFunctionName = calleeFunctionName.replaceAll("\\\"", "\\\\\"");
 		calleeFunctionName = calleeFunctionName.replaceAll("\\\'", "\\\\\'");
 		int lineNo=calleeFunction.getLineno();
-		String code=
+		
+		String checkCallerName="if(arguments.callee.caller.funcName==undefined || arguments.callee.caller==null || String(arguments.callee.caller).indexOf(\"function (data)\")==0){"
+								+
+								"callerName='NoFunctionNode';}"
+								+
+								"else if(String(arguments.callee.caller).indexOf(\"function (e)\")==0"
+								+
+								"|| String(arguments.callee.caller).indexOf(\"function (event)\")==0){"
+								+
+								"callerName='eventHandler';}\n";
+		
+		
+		String code= checkCallerName+
 			"send(new Array('" + getScopeName() + "::" + calleeFunctionName + "', '" + lineNo +  
             "', new Array(";
 		
-		code += "addFunctionCallTrack('" + calleeFunctionName + "'" + "))));";
+		code += "addFunctionCallTrack(" + callerName + "))));";
 
 		return parse(code);
 	

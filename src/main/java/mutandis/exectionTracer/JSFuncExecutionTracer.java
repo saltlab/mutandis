@@ -119,7 +119,7 @@ public class JSFuncExecutionTracer extends ExecutionTracer
 		
 		
 		
-	/*	@Override
+		@Override
 		public void onNewState(CrawlSession session) {
 	        
 		
@@ -160,7 +160,7 @@ public class JSFuncExecutionTracer extends ExecutionTracer
 			}
 		}
 		
-*/		
+		
 		
 		
 		

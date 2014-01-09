@@ -25,7 +25,7 @@ import com.crawljax.core.plugin.OnNewStatePlugin;
 import com.crawljax.util.Helper;
 
 public abstract class ExecutionTracer
-				implements PreStateCrawlingPlugin, /*OnNewStatePlugin,*/PostCrawlingPlugin, PreCrawlingPlugin, GeneratesOutput{
+				implements PreStateCrawlingPlugin, OnNewStatePlugin,PostCrawlingPlugin, PreCrawlingPlugin, GeneratesOutput{
 	
 	
 	protected static final int ONE_SEC = 1000;
@@ -77,9 +77,9 @@ public abstract class ExecutionTracer
 	
 	
 	
-/*	@Override
+	@Override
 	public abstract void onNewState(CrawlSession session);
-  */     
+       
 	
 		
 	
