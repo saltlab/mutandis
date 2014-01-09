@@ -14,15 +14,20 @@ function sendReally() {
 	window.buffer = new Array();
 }
 
-function addFunctionCallTrack(funcCalleeName) {
+function addFunctionCallTrack(funcCallerName) {
 	
-	if(arguments.callee.caller==null){
+	
+/*	if(arguments.callee.caller.funcName==undefined || arguments.callee.caller==null || String(arguments.callee.caller).indexOf("function (data)")==0){
+		
 		return new Array("NoFunctionNode", funcCalleeName);
 	}
 	else if(String(arguments.callee.caller).indexOf("function (e)")==0
 			|| String(arguments.callee.caller).indexOf("function (event)")==0){
 		return new Array("eventHandler", funcCalleeName);
 	}
-	return new Array(arguments.callee.caller.funcName, funcCalleeName);
+*/	
+	
+		
+	return new Array(funcCallerName, arguments.callee.caller.funcName);
 				
 };
